@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ArticlesListFragment : Fragment() {
@@ -46,6 +47,7 @@ class ArticlesListFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    @ExperimentalMaterialApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,12 +78,7 @@ class ArticlesListFragment : Fragment() {
                                         bundle.putInt("articleId", it)
                                         //handle navigation
                                         findNavController().navigate(com.example.newsapp.R.id.action_articlesListFragment_to_articleContentFragment, bundle)
-                                        Toast.makeText(
-                                                application.applicationContext,
-                                                "FragmenlistArticle",
-                                                Toast.LENGTH_SHORT
-                                        ).show()
-                                    })
+                                    }, {}, {})
                                 }
 
                             }
@@ -98,13 +95,21 @@ class ArticlesListFragment : Fragment() {
 fun getComposeList(
         itemViewStates: List<Article>,
         onSelectArticle: (Int) -> Unit,
+        onClick: () -> Unit,
+        onError: (String) -> Unit
 ) {
     LazyColumn {
         itemsIndexed(
             items = itemViewStates
         ){index, item ->
             /*getListItem(itemViewState = item, onClick = { onSelectArticle})*/
-            getListItem(itemViewState = item, onSelectArticle = { onSelectArticle }, onClick = { onSelectArticle })
+            getListItem(itemViewState = item, onSelectArticle = { onSelectArticle }, onClick = {
+                    //onSelectArticle(index)
+                    item.urlToImage?.let{
+                        onSelectArticle(index)
+                    }?: onError("Error. There's something wrong with that recipe.")
+
+            })
         }
     }
 }
@@ -129,7 +134,6 @@ fun getListItem(
         elevation = 8.dp,
         backgroundColor = Color.White
     ) {
-
         Column(
             modifier = Modifier.padding()
         ) {

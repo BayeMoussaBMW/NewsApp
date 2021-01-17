@@ -6,5 +6,5 @@ import com.example.newsapp.network.model.ArticlessDto
 
 interface ArticlesRepository {
     suspend fun get(): Articles
-    suspend fun getContentArticle(): Article
+    suspend fun getContentArticle(): Article?
 }

@@ -16,6 +16,10 @@ class ArticlesRepository_impl (
        return dtoMapper.mapFromDomainModel(articleService.getArticles())
     }
 
+    /*override suspend fun getContentArticle(id: Int): Article {
+        return dtoMapper.mapFromArticleDomainModel(articleService.getArticles() as ArticleDto)
+    }*/
+
     override suspend fun getContentArticle(): Article {
         return dtoMapper.mapFromArticleDomainModel(articleService.getArticles() as ArticleDto)
     }
