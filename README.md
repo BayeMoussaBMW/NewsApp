@@ -10,6 +10,12 @@ Navigation Components
 
 Retrofi2 
 
+Coroutines
+
+ViewModel
+
+MVVM
+
 Glide
 
 # Requirements 
