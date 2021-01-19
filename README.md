@@ -24,3 +24,4 @@ Android Studio Canary
 
 https://newsapi.org/ for API
 
+apikey
